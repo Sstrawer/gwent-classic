@@ -198,53 +198,53 @@ html {
 	align-items: center;
 }
 
-#notif-me-first::after { content:"You will go first"; }
-#notif-op-first::after { content:"Your opponent will go first"; }
+#notif-me-first::after { content:"你先手"; }
+#notif-op-first::after { content:"对手先手"; }
 
 #notif-me-coin { background-image: url('img/icons/notif_me_coin.png'); }
-#notif-me-coin::after { content:"You will go first"; }
+#notif-me-coin::after { content:"你先手"; }
 
 #notif-op-coin { background-image: url('img/icons/notif_op_coin.png'); }
-#notif-op-coin::after { content:"Your opponent will go first"; }
+#notif-op-coin::after { content:"对手先手"; }
 
 #notif-round-start { background-image: url('img/icons/notif_round_start.png'); }
-#notif-round-start::after { content:"Round Start"; }
+#notif-round-start::after { content:"回合开始"; }
 
 #notif-me-pass { background-image: url('img/icons/notif_round_passed.png'); }
-#notif-me-pass::after { content:"Round passed"; }
+#notif-me-pass::after { content:"已弃权"; }
 
 #notif-op-pass { background-image: url('img/icons/notif_round_passed.png'); }
-#notif-op-pass::after { content:"Your opponent has passed"; }
+#notif-op-pass::after { content:"对手已弃权"; }
 
 #notif-win-round { background-image: url('img/icons/notif_win_round.png'); } 
-#notif-win-round::after { content:"You won the round!"; }
+#notif-win-round::after { content:"你赢了这一局！"; }
 
 #notif-lose-round { background-image: url('img/icons/notif_lose_round.png'); }
-#notif-lose-round::after { content:"Your opponent won the round"; }
+#notif-lose-round::after { content:"对手赢了这一局"; }
 
 #notif-draw-round { background-image: url('img/icons/notif_draw_round.png'); }
-#notif-draw-round::after {content:"The round ended in a draw"; }
+#notif-draw-round::after {content:"该局以平局结束"; }
 
 #notif-me-turn { background-image: url('img/icons/notif_me_turn.png'); } 
-#notif-me-turn::after { content:"Your turn!"; }
+#notif-me-turn::after { content:"轮到你了！"; }
 
 #notif-op-turn { background-image: url('img/icons/notif_op_turn.png'); }
-#notif-op-turn::after { content:"Opponent's turn"; }
+#notif-op-turn::after { content:"对手的回合"; }
 
 #notif-north { background-image: url('img/icons/notif_north.png'); }
-#notif-north::after { content:"Northern Realms faction ability triggered - North draws an additional card."; }
+#notif-north::after { content:"北方领域阵营能力触发 —— 北方额外抽一张牌。"; }
 
 #notif-monsters { background-image: url('img/icons/notif_monsters.png'); }
-#notif-monsters::after { content: "Monsters faction ability triggered - one randomly-chosen Monster Unit Card stays on the board"; }
+#notif-monsters::after { content: "怪物阵营能力触发 —— 随机一张怪物单位牌留在场上"; }
 
 #notif-scoiatael { background-image: url('img/icons/notif_scoiatael.png'); }
-#notif-scoiatael::after { content: "Opponent used the Scoia'tael faction perk to go first."; }
+#notif-scoiatael::after { content: "对手使用了松鼠党阵营能力选择先手。"; }
 
 #notif-skellige-op{ background-image: url('img/icons/notif_skellige.png'); }
-#notif-skellige-op::after { content: "Opponent Skellige Ability Triggered!"; }
+#notif-skellige-op::after { content: "对手史凯利杰阵营能力触发！"; }
 
 #notif-skellige-me{ background-image: url('img/icons/notif_skellige.png'); }
-#notif-skellige-me::after { content: "Skellige Ability Triggered!"; }
+#notif-skellige-me::after { content: "史凯利杰阵营能力触发！"; }
 
 /* ------- card preview ------------- */
 

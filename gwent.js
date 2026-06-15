@@ -153,13 +153,13 @@ class ControllerAI {
 	
 	// Tells the Player that this object controls to play a card
 	async playCard(c, max, data){
-		if (c.name === "Commander's Horn")
+		if (c.name === "指挥官号角")
 			await this.horn(c);
-		else if (c.name === "Mardroeme")
+		else if (c.name === "马德罗姆")
 			await this.mardroeme(c);
-		else if (c.name === "Decoy")
+		else if (c.name === "诱饵")
 			await this.decoy(c, max, data);
-		else if (c.name === "Scorch")
+		else if (c.name === "灼烧")
 			await this.scorch(c, max, data);
 		else
 			await this.player.playCard(c);
@@ -324,7 +324,7 @@ class ControllerAI {
 	// Calculates the weight for playing a weather card
 	weightWeather(card) {
 		let rows;
-		if (card.name === "Clear Weather")
+		if (card.name === "晴空")
 			rows = Object.values(weather.types).filter(t => t.count > 0).flatMap(t => t.rows);
 		else
 			rows = Object.values(weather.types).filter(t => t.count === 0 && t.name === card.abilities[0]).flatMap(t => t.rows);
@@ -343,12 +343,12 @@ class ControllerAI {
 	
 	// Calculates the weight for playing a mardroeme card
 	weightMardroemeRow(card, row){
-		if (card.name === "Mardroeme" && row.special !== null)
+		if (card.name === "马德罗姆" && row.special !== null)
 			return 0;
-		let ermion = card.holder.hand.cards.filter(c => c.name === "Ermion").length > 0;
-		if (ermion && card.name !== "Ermion" && row === board.row[1])
+		let ermion = card.holder.hand.cards.filter(c => c.name === "艾尔米恩").length > 0;
+		if (ermion && card.name !== "艾尔米恩" && row === board.row[1])
 			return 0;
-		let name = row === board.row[1] ? "Young Berserker" : "Berserker";
+		let name = row === board.row[1] ? "年轻狂战士" : "狂战士";
 		let n = row.cards.filter(c => c.name === name).length;
 		let weight = row === board.row[2] ? 10*n : 8*n*n - 2*n
 		return Math.max(1, weight);
@@ -371,9 +371,9 @@ class ControllerAI {
 		else {
 			let n = 0;
 			if (!row.effects.mardroeme)
-				n = row.cards.filter(c => c.name === "Young Berserker").length;
+				n = row.cards.filter(c => c.name === "年轻狂战士").length;
 			else
-				n = row.cards.filter(c => "Transformed Young Vildkaarl").length;
+				n = row.cards.filter(c => "变形后的年轻维德卡尔").length;
 			score = 8*((n+1)*(n+1) - n*n) + n*score;
 		}
 		return Math.max(1, score);
@@ -388,9 +388,9 @@ class ControllerAI {
 	
 	// Assigns a weights for how likely the controller with play a card from its hand
 	weightCard(card, max, data){
-		if (card.name === "Decoy")
+		if (card.name === "诱饵")
 			return data.spy.length ? 50 : data.medic.length ? 15 : data.scorch.length  ? 10 : max.me.length ? 1 : 0;
-		if (card.name === "Commander's Horn") {
+		if (card.name === "指挥官号角") {
 			let rows = [0,1,2].map(i => board.row[i]).filter(r => r.special === null);
 			if (!rows.length)
 				return 0;
@@ -626,7 +626,7 @@ class Player {
 		this.elem_leader.children[1].classList.add("hide");
 		this.elem_leader.addEventListener("click", async () => await ui.viewCard(this.leader), false);
 		this.elem_leader.addEventListener('mouseenter', CLICK_EVENT_SFX);
-		this.elem_leader.children[0].setAttribute('data-title', "View leader");
+		this.elem_leader.children[0].setAttribute('data-title', "查看领袖");
 	}
 	
 	// Enable access to leader ability and toggles leader visuals to on state
@@ -644,7 +644,7 @@ class Player {
 					AudioManager.playSFX('open');
 					await this.activateLeader();
 		}	), false);
-			this.elem_leader.children[0].setAttribute('data-title', "Play leader");
+			this.elem_leader.children[0].setAttribute('data-title', "使用领袖技能");
 		} else {
 			this.elem_leader.addEventListener("click", async () => await ui.viewCard(this.leader), false);
 		}
@@ -1243,7 +1243,7 @@ class Weather extends CardContainer {
 		super.addCard(card);
 		AudioManager.playSFX(card.audio);
 		card.elem.classList.add("noclick");
-		if (card.name === "Clear Weather"){
+		if (card.name === "晴空"){
 			// TODO Sunlight animation
 			await sleep(500);
 			this.clearWeather();
@@ -1516,7 +1516,7 @@ class Game {
 		await ui.queueCarousel(player_me.hand, 2, async (c, i) => { 
 			AudioManager.playSFX('redraw');
 			await player_me.deck.swap(c, c.cards[i]);
-		}, c => true, false, true, "Choose up to 2 cards to redraw.");
+		}, c => true, false, true, "选择最多2张牌换掉。");
 		ui.enablePlayer(false);
 	}
 	
@@ -1660,9 +1660,9 @@ class Game {
 	{
 		AudioManager.playSFX('warning');
 		ui.popup(
-			"Resume", ()=>{},
-			"Exit", ()=>this.returnToCustomization(),
-			"Quit curent game?" , "This will return you to the deck customization menu."
+			"继续", ()=>{},
+			"退出", ()=>this.returnToCustomization(),
+			"退出当前游戏？" , "这将返回到卡组自定义界面。"
 		); 
 	}
 	
@@ -1682,7 +1682,7 @@ class Game {
 	{
 		this.reset();
 		player_me.reset();
-		player_op = new Player('op', 'Player 2', dm.constructOpponentDeck(false));
+		player_op = new Player('op', '玩家2', dm.constructOpponentDeck(false));
 		this.endScreen.classList.add("hide");
 		this.startGame();
 	}
@@ -1742,7 +1742,7 @@ class Card {
 		}
 		
 		if (this.row === "leader")
-			this.desc_name = "Leader Ability";
+			this.desc_name = "领袖技能";
 		else if (this.abilities.length > 0)
 			this.desc_name = ability_dict[this.abilities[this.abilities.length-1]].name;
 		else if (this.row==="agile")
@@ -1769,7 +1769,7 @@ class Card {
 	
 	// Sets and displays the current power of this card
 	setPower(n){
-		if (this.name === "Decoy")
+		if (this.name === "诱饵")
 			return;
 		let elem = this.elem.children[0].children[0];
 		if (n !== this.power) {
@@ -1837,7 +1837,7 @@ class Card {
 	
 	// Returns true if card is sent to a Row's special slot
 	isSpecial() {
-		return this.name === "Commander's Horn" || this.name === "Mardroeme";
+		return this.name === "指挥官号角" || this.name === "马德罗姆";
 	}
 
 	isHero() { return this.hero; }
@@ -2063,7 +2063,7 @@ class UI {
 		if (pCard === null || card.holder.hand.cards.includes(card)) {
 			this.setSelectable(null, false);
 			this.showPreview(card);
-		} else if (pCard.name === "Decoy") {
+		} else if (pCard.name === "诱饵") {
 			this.hidePreview(card);
 			this.enablePlayer(false);
 			board.toHand(card, row);
@@ -2084,16 +2084,16 @@ class UI {
 			await ui.viewCardsInContainer(row);
 			return;
 		}
-		if (this.previewCard.name === "Decoy")
+		if (this.previewCard.name === "诱饵")
 			return;
 		let card = this.previewCard;
 		let holder = card.holder;
 		this.hidePreview();
 		this.enablePlayer(false);
-		if (card.name === "Scorch"){
+		if (card.name === "灼烧"){
 			this.hidePreview();
 			await ability_dict["scorch"].activated(card);
-		} else if (card.name === "Decoy") {
+		} else if (card.name === "诱饵") {
 			return;
 		} else {
 			await board.moveTo(card, row, card.holder.hand);
@@ -2270,7 +2270,7 @@ class UI {
 		
 		weather.elem.classList.add("noclick");
 		
-		if (card.name === "Scorch") {
+		if (card.name === "灼烧") {
 			for (let r of board.row){
 				r.elem.classList.add("row-selectable");
 				r.elem_special.classList.add("row-selectable");
@@ -2292,7 +2292,7 @@ class UI {
 		
 		board.row.forEach( r => r.elem_special.classList.add("noclick") );
 		
-		if (card.name === "Decoy"){
+		if (card.name === "诱饵"){
 			for (let i=0; i<6; ++i) {
 				let r = board.row[i];
 				let units = r.cards.filter(c => c.isUnit());
@@ -2730,8 +2730,8 @@ class DeckMaker {
 	updateStats(){
 		let stats = document.getElementById("deck-stats");
 		stats.children[1].innerHTML = this.stats.total;
-		stats.children[3].innerHTML = this.stats.units +(this.stats.units < 22 ? "/22" : "");
-		stats.children[5].innerHTML = this.stats.special + "/10";
+		stats.children[3].innerHTML = this.stats.units +(this.stats.units < 22 ? "/22张" : "");
+		stats.children[5].innerHTML = this.stats.special + "/10张";
 		stats.children[7].innerHTML = this.stats.strength;
 		stats.children[9].innerHTML = this.stats.hero;
 		
@@ -2819,9 +2819,9 @@ class DeckMaker {
 	startNewGame(){
 		let warning = "";
 		if (this.stats.units < 22)
-			warning += "Your deck must have at least 22 unit cards. \n";
+			warning += "你的卡组至少需要22张单位牌。\n";
 		if (this.stats.special > 10)
-			warning += "Your deck must have no more than 10 special cards. \n";
+			warning += "你的卡组不能超过10张特殊牌。\n";
 		if (warning != "")
 		{
 			AudioManager.playSFX("warning");
@@ -2835,8 +2835,8 @@ class DeckMaker {
 		};
 		const op_deck = this.constructOpponentDeck(true);
 		
-		player_me = new Player(0, "Player 1", me_deck);
-		player_op = new Player(1, "Player 2", op_deck);
+		player_me = new Player(0, "玩家1", me_deck);
+		player_op = new Player(1, "玩家2", op_deck);
 		
 		this.elem.classList.add("hide");
 		game.startGame();
@@ -2895,7 +2895,7 @@ class DeckMaker {
 					callback(deck);
 				
 			} catch (e) {
-				alert("Uploaded deck is not formatted correctly!");
+				alert("上传的卡组格式不正确！");
 			}
 			finally
 			{
@@ -2924,7 +2924,7 @@ class DeckMaker {
 			return deck;
 		} catch (e) {
 			AudioManager.playSFX('warning');
-			alert("Uploaded deck is not parsable!");
+			alert("上传的卡组无法解析！");
 			return;
 		}
 	}
@@ -2936,9 +2936,9 @@ class DeckMaker {
 		let warning = "";
 		// verify that leader card is actually a leader and that it's faction matches the deck faction
 		if (card_dict[deck.leader].row !== "leader")
-			warning += "'" + card_dict[deck.leader].name + "' is cannot be used as a leader\n";
+			warning += "'" + card_dict[deck.leader].name + "' 不能用作领袖\n";
 		if (deck.faction != card_dict[deck.leader].deck)
-			warning += "Leader '" + card_dict[deck.leader].name + "' doesn't match deck faction '" + deck.faction + "'.\n";
+			warning += "领袖 '" + card_dict[deck.leader].name + "' 与卡组阵营 '" + deck.faction + "' 不匹配。\n";
 		// check if cards exist and have correct faction & count
 		const cards = deck.cards.filter( c => {
 			const card = card_dict[c[0]];
@@ -2947,11 +2947,11 @@ class DeckMaker {
 				return false
 			}
 			if (![deck.faction, "neutral", "special", "weather"].includes(card.deck)) {
-				warning += "'" + card.name + "' cannot be used in a deck of faction type '" + deck.faction +"'\n";
+				warning += "'" + card.name + "' 不能用于 '" + deck.faction + "' 阵营的卡组\n";
 				return false;
 			}
 			if (card.count < c[1]) {
-				warning += "Deck contains " + c[1] + "/" + card.count + " available " + card_dict[c.index].name + " cards\n";
+				warning += "卡组中包含 " + c[1] + "/" + card.count + " 张可用的 " + card_dict[c.index].name + "\n";
 				c[1] = card.count;
 				return true;
 			}
@@ -2966,7 +2966,7 @@ class DeckMaker {
 				return null;
 			}
 			AudioManager.playSFX('warning');
-			if (confirm(warning + "\n\n\Continue importing deck?"))
+			if (confirm(warning + "\n\n继续导入卡组？"))
 			{
 				return null;
 			}
@@ -3014,7 +3014,7 @@ class DeckMaker {
 		const buttons = ['op-preview-clear', 'op-preview-open'].map(id=>document.getElementById(id));
 		if (isEmpty(this.opponentData))
 		{
-			leaderElem.children[1].innerHTML = "Random";
+			leaderElem.children[1].innerHTML = "随机";
 			[factionElem, ...buttons].forEach(e=>e.classList.add('hide'));
 		}
 		else
@@ -3034,7 +3034,7 @@ class DeckMaker {
 		const container = new CardContainer();
 		//container.cards = [leader, ...Card.this.opponentData.cards];
 		container.cards = Card.getCardsFromIdCounts([leader, ...this.opponentData.cards]);
-		ui.queueCarousel(container, 1, ()=>{}, ()=>true, false, true, "Oponent's deck");
+		ui.queueCarousel(container, 1, ()=>{}, ()=>true, false, true, "对手的卡组");
 	}
 }
 
